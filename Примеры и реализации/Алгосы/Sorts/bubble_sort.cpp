@@ -38,7 +38,7 @@
  */
 
 #include <iostream>
-#include "algosiki.h"
+#include "../algosiki.h"
 using namespace std;
 
 /**

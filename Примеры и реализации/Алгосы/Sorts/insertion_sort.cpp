@@ -15,7 +15,7 @@
  */
 
 #include <iostream>
-#include "algosiki.h"
+#include "../algosiki.h"
 using namespace std;
 
 void selection_sort(Data* arr, size_t n) {
