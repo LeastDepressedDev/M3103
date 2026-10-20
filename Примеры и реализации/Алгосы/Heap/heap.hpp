@@ -1,4 +1,13 @@
 /**
+* Very inclear and "hard" code. Bad for algo sections. Tried to make code more readable, changed file extensions to more correct ones.
+*
+* TODO: Rewrite from scratch.
+*
+* Comment by LeastDepressedDev.
+*/
+
+
+/**
  * Минимальная двоичная куча (MinHeap).
  *
  * Куча — это полное бинарное дерево, в котором каждый родительский
@@ -22,15 +31,22 @@
  * Компаратор less(a, b) возвращает true, если a < b
  */
 
-
+#pragma once
 
 #include <cstddef>
+#include <cstdio>
 #include <utility>
 #include <stdexcept>
 
 
 template <typename T>
 using LessComparator = bool (*)(const T&, const T&);
+
+void Raise(const char* const msg, int exit_code) {
+    printf("Error raised: %s\nExit code: %d", msg, exit_code);
+    exit(1);
+}
+
 
 
 template <typename T>
@@ -46,6 +62,7 @@ private:
         while (i > 0) {
             std::size_t j = (i - 1) / 2;
             if (!less_(arr_[i], arr_[j])) return;
+
             std::swap(arr_[i], arr_[j]);
             i = j;
         }
@@ -57,7 +74,9 @@ private:
             std::size_t l = 2 * i + 1;
             std::size_t r = 2 * i + 2;
             if (l >= heap_size_) return;
+
             std::size_t j = (r < heap_size_ && less_(arr_[r], arr_[l])) ? r : l;
+
             if (!less_(arr_[j], arr_[i])) return;
             std::swap(arr_[j], arr_[i]);
             i = j;
@@ -68,16 +87,20 @@ private:
     void Resize(std::size_t new_capacity) {
             capacity_ = new_capacity;
             T* new_arr = new T[capacity_];
+
             for (std::size_t i = 0; i < heap_size_; i++)
                 new_arr[i] = arr_[i];
-            delete [] arr_;
+
+            delete[] arr_;
             arr_ = new_arr;
     }
+
     // Уменьшает массив вдвое, если занято не более четверти его ёмкости
     void TryDecreaseCapacity() {
         if (capacity_ > 1 && heap_size_ <= capacity_ / 4)
             Resize(capacity_ / 2);
     }
+
     // Увеличивает массив вдвое, если он заполнен
     void TryIncreaseCapacity() {
         if (heap_size_ >= capacity_)
@@ -92,12 +115,19 @@ public:
     // Создаёт пустую кучу с начальной вместимостью 1
     MinHeap(LessComparator<T> less)
         : arr_(new T[1]), heap_size_(0), capacity_(1), less_(less) {
+
         if (less_ == nullptr)
-            throw std::argument_exception("comparator cant't be nullptr");
+            Raise("comparator cant't be nullptr", 1);
     }
+
+
     // Создаёт кучу из массива за O(n) с помощью просеивания вниз
     MinHeap(const T* arr, std::size_t size, LessComparator<T> less)
         : heap_size_(size), capacity_(1), less_(less) {
+
+        if (less_ == nullptr)
+            Raise("comparator cant't be nullptr", 1);
+
         while (capacity_ <= heap_size_)
             capacity_ *= 2;
         arr_ = new T[capacity_];
@@ -107,15 +137,19 @@ public:
         for (std::size_t i = heap_size_ / 2; i-- > 0;)
             SiftDown(i);
     }
+
+
     // Освобождает память массива
     ~MinHeap() {
-        delete [] arr_;
+        delete[] arr_;
     }
+
 
     // Возвращает true, если куча пуста
     bool IsEmpty() const { return heap_size_ == 0; }
     // Возвращает количество элементов в куче
     std::size_t GetHeapSize() const { return heap_size_; }
+
 
     // Возвращает минимальный элемент, не удаляя его
     // Бросает исключение, если куча пуста
@@ -124,6 +158,7 @@ public:
             throw std::out_of_range("Heap is empty");
         return arr_[0];
     }
+
 
     // Удаляет и возвращает минимальный элемент
     // Бросает исключение, если куча пуста
@@ -137,6 +172,7 @@ public:
         TryDecreaseCapacity();
         return res;
     }
+
 
     // Добавляет элемент и восстанавливает свойство кучи
     void Insert(T x) {

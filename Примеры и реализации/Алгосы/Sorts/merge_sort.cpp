@@ -24,7 +24,7 @@
  */
 
 #include <iostream>
-#include "algosiki.h"
+#include "../algosiki.h"
 using namespace std;
 
 void merge_sort(Data* array, long left, long right) {
