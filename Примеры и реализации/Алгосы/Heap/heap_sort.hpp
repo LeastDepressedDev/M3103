@@ -11,17 +11,13 @@ bool IntGreater(const int& a, const int& b) { return a > b; }
 //
 
 // Версия на куче MinHeap<T>
-// Время: O(n log n), Память: O(n)
+// Время: O(n log n)
+// Память: O(n)
 void HeapSort_n(int* arr, int n) {
     MinHeap<int> heap(arr, n, IntGreater);
-    int* buf = new int[n];
     
-    for (int i = n - 1; i > 0; i--)
-        buf[i] = heap.Pop();
-
-    for (int i = 0; i < n; i++) {
-        arr[i] = buf[i];
-    }
+    for (int i = n - 1; i >= 0; i--)
+        arr[i] = heap.Pop();
 
     delete[] buf;
 }
@@ -51,7 +47,8 @@ void SiftDown(int* arr, int heap_size, int i) {
 }
 
 
-// Время: O(n log n), Память: O(1)
+// Время: O(n log n)
+// Память: O(1)
 void heapSort_1(int* arr, int n) {
     for (int i = n / 2 - 1; i >= 0; i--)
         SiftDown(arr, n, i);
