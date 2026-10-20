@@ -34,3 +34,10 @@ add_executable(SelectionSort
     Sorts/insertion_sort.cpp
 )
 
+project(Heap LANGUAGES CXX)
+
+add_executable(Heapsort
+    algosiki.cpp
+
+    Heap/heapsort_tests.cpp
+)
